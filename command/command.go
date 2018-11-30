@@ -1,11 +1,10 @@
 package command
 
 import (
-	"bytes"
 	"fmt"
 	"github.com/Maki-Daisuke/go-lines"
-	"github.com/atotto/clipboard"
 	"github.com/codegangsta/cli"
+	"os"
 	"regexp"
 	"strings"
 )
@@ -24,23 +23,17 @@ var Flags = []cli.Flag{
 }
 
 func Command(c *cli.Context) error {
-	body, err := clipboard.ReadAll()
-
-	if err != nil {
-		return err
-	}
-
 	re := regexp.MustCompile(c.String("regex"))
-	line_chan, err_chan := lines.LinesWithError(bytes.NewReader([]byte(body)))
+	lineChan, errChan := lines.LinesWithError(os.Stdin)
 
 	var outputs []string
 
-	for line := range line_chan {
+	for line := range lineChan {
 		if re.MatchString(line) {
 			outputs = append(outputs, line)
 		}
 	}
-	if err := <-err_chan; err != nil {
+	if err := <-errChan; err != nil {
 		return err
 	}
 	fmt.Println(strings.Join(outputs, c.String("implode")))
