@@ -1,28 +1,28 @@
 # paste-master
 
-Filtering Paste From ClipBoard.
+Filtering Paste From StdIn.
 
 ## Description
 
-processing paste from clipboard
+processing paste from stdin
 
 ## Usage
 
 ```console
-$ paste-master
+$ pbpaste | paste-master
 ```
 
 ### Options
 #### RegexFilter
 
 ```console
-$ paste-master --regex="^\d$"
+$ pbpaste | paste-master --regex="^\d$"
 ```
 
 #### Implode Processing
 > LineEnd Replacer 
 ```console
-$ paste-master --implode=", "
+$ pbpaste | paste-master --implode=", "
 ```
 
 
